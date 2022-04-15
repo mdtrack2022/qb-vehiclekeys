@@ -36,6 +36,32 @@ RegisterNetEvent('qb-vehiclekeys:server:AcquireVehicleKeys', function(plate)
     GiveKeys(src, plate)
 end)
 
+RegisterNetEvent('MojiaGarages:server:updateOutsiteVehicleKeys', function(plate, citizenid) --Update vehicle Keys for qb-vehicle key
+    if plate and citizenid then
+        if VehicleList then
+            -- VehicleList exists so check for a plate
+            local val = VehicleList[plate]
+            if val then
+                -- The plate exists
+                VehicleList[plate].owners[citizenid] = true
+            else
+                -- Plate not currently tracked so store a new one with one owner
+                VehicleList[plate] = {
+                    owners = {}
+                }
+                VehicleList[plate].owners[citizenid] = true
+            end
+        else
+            -- Initialize new VehicleList
+            VehicleList = {}
+            VehicleList[plate] = {
+                owners = {}
+            }
+            VehicleList[plate].owners[citizenid] = true
+        end
+    end
+end)
+
 QBCore.Functions.CreateCallback('qb-vehiclekeys:server:GetVehicleKeys', function(source, cb)
     local citizenid = QBCore.Functions.GetPlayer(source).PlayerData.citizenid
     local keysList = {}

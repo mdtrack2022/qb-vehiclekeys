@@ -227,6 +227,7 @@ function GetKeys()
 end
 
 exports('HasKeys', HasKeys)
+exports('HasVehicleKey', HasKeys)
 function HasKeys(plate)
     return KeysList[plate]
 end
